@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Focus | Elite Productivity</title>
+  <style>
+    /* RESET & CORE THEME */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      /* Dark Mode Palette: Midnight Navy to Deep Charcoal */
+      background: #0f172a; 
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      color: #e2e8f0;
+      width: 360px;
+      min-height: 600px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      background: #1e293b;
+      margin: 12px;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid #334155;
+    }
+
+    /* NEON HEADER */
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+      /* Cyan to Purple Neon Gradient */
+      background: linear-gradient(90deg, #22d3ee, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(34, 211, 238, 0.3));
+    }
+
+    /* CARD STYLING */
+    .section {
+      background: #334155;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+      border: 1px solid #475569;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .section:hover {
+      border-color: #22d3ee;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 20px rgba(34, 211, 238, 0.1);
+    }
+
+    h2 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* INPUTS */
+    .time-input {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .time-input input {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      color: #22d3ee;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .time-input input:focus {
+      outline: none;
+      border-color: #22d3ee;
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+    }
+
+    /* NEON BUTTONS */
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 5px 0;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    #startTimerBtn {
+      background: #22d3ee;
+      color: #0f172a;
+    }
+
+    #focusModeBtn {
+      background: transparent;
+      border: 1px solid #818cf8;
+      color: #818cf8;
+    }
+
+    #focusModeBtn:hover {
+      background: rgba(129, 140, 248, 0.1);
+    }
+
+    #stopTimerBtn {
+      background: #f43f5e;
+      color: white;
+    }
+
+    /* DOOMSCROLL GRID */
+    .doomscroll-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .doomscroll-buttons button {
+      background: #475569;
+      color: white;
+    }
+
+    /* PROGRESS STATS */
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .stat-label { color: #94a3b8; font-size: 13px; }
+    .stat-value { color: #22d3ee; font-weight: 800; font-size: 20px; }
+
+    /* LISTS */
+    #siteList {
+      margin: 10px 0;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    #siteList li {
+      background: #1e293b;
+      margin-bottom: 5px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    #addSiteInput {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #475569;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* TIMER UI */
+    #timerDisplay {
+      font-size: 42px;
+      font-weight: 800;
+      color: #22d3ee;
+      text-align: center;
+      font-family: 'Courier New', Courier, monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>NEXUS FOCUS</h1>
+
+    <div class="section">
+      <h2><span style="color:#22d3ee">●</span> Chronos Engine</h2>
+      <div class="time-input">
+        <input type="number" id="hours" min="0" max="23" value="0" placeholder="HH">
+        <input type="number" id="minutes" min="0" max="59" value="0" placeholder="MM">
+        <input type="number" id="seconds" min="0" max="59" value="0" placeholder="SS">
+      </div>
+      <button id="startTimerBtn">Initialize Session</button>
+      <div style="display: flex; gap: 8px;">
+        <button id="focusModeBtn">🎯 Focus</button>
+        <button id="quickBreakBtn" style="background:#475569; color:white;">☕ Break</button>
+      </div>
+    </div>
+
+    <div id="timerSection" class="section" style="display: none; background: #0f172a; border: 1px solid #22d3ee;">
+      <p id="timerLabel" style="text-align: center; font-size: 11px; color: #818cf8;"></p>
+      <div id="timerDisplay">00:00:00</div>
+      <button id="stopTimerBtn" style="display: none; margin-top: 10px;">Abort Mission</button>
+    </div>
+
+    <div class="section">
+      <h2><span style="color:#818cf8">●</span> Neural Progress</h2>
+      <div class="stat-item">
+        <span class="stat-label">Daily Reflections</span>
+        <span class="stat-value" id="reflectionsCount">0</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span style="color:#f43f5e">●</span> Pattern Breaker</h2>
+      <div class="doomscroll-buttons">
+        <button id="viewStats">Insights</button>
+        <button id="openSettings">Config</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span style="color:#fbbf24">●</span> Firewall</h2>
+      <label style="display:flex; align-items:center; gap:10px; font-size:13px; margin-bottom:10px;">
+        <input type="checkbox" id="focusToggle"> Active Defense Mode
+      </label>
+      <ul id="siteList"></ul>
+      <input type="text" id="addSiteInput" placeholder="Enter domain...">
+      <button id="addSiteBtn" style="background:#818cf8; color:white;">Add to Vault</button>
+      <div id="errorMessage" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

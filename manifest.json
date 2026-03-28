@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Nexus Focus - Elite Productivity",
+  "version": "1.0",
+  "author": "CodeCrafters",
+  "description": "An AI-inspired neural shield that disrupts digital patterns and optimizes deep work sessions.",
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "notifications",
+    "scripting",
+    "windows",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "icons/icon48.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options/options.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/scrollWatcher.js", "content/content.js"],
+      "css": ["styles/overlay.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "pages/dashboard.html",
+        "pages/dashboard.js",
+        "pages/tab_overload.html",
+        "pages/tab_overload.js",
+        "pages/breathe.html",
+        "assets/breathing.gif"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

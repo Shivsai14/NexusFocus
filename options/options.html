@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Focus | Firewall Configuration</title>
+  <style>
+    /* NEXUS NEON THEME - HACKATHON EDITION */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      background-color: #0f172a; /* Midnight Navy */
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .settings-card {
+      background: #1e293b;
+      width: 100%;
+      max-width: 450px;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      border: 1px solid #334155;
+      position: relative;
+    }
+
+    /* Subtle top glow */
+    .settings-card::after {
+      content: '';
+      position: absolute;
+      top: -1px; left: 20px; right: 20px; height: 1px;
+      background: linear-gradient(90deg, transparent, #22d3ee, transparent);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 26px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #22d3ee, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+
+    /* INPUT GROUPS */
+    .setting-group {
+      background: #334155;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 15px;
+      border: 1px solid #475569;
+      transition: border-color 0.3s ease;
+    }
+
+    .setting-group:focus-within {
+      border-color: #22d3ee;
+    }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #475569;
+      color: #22d3ee;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'JetBrains Mono', monospace; /* Looks more "pro" */
+      font-weight: 600;
+      outline: none;
+    }
+
+    .help-text {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 8px;
+    }
+
+    /* TAGS FOR VAULT */
+    .site-tag {
+      display: inline-flex;
+      align-items: center;
+      background: #0f172a;
+      color: #818cf8;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin: 8px 8px 0 0;
+      border: 1px solid #818cf844;
+    }
+
+    .site-tag button {
+      background: none;
+      border: none;
+      color: #f43f5e;
+      margin-left: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    /* CHECKBOX FIREWALL */
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #22d3ee;
+      cursor: pointer;
+    }
+
+    /* SAVE BUTTON: THE "WINNER" LOOK */
+    .save-btn {
+      width: 100%;
+      padding: 18px;
+      background: #22d3ee;
+      border: none;
+      border-radius: 12px;
+      color: #0f172a;
+      font-weight: 900;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+    }
+
+    .save-btn:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(34, 211, 238, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="settings-card">
+    <div class="header">
+      <h1>NEXUS CONFIG</h1>
+    </div>
+
+    <div class="setting-group">
+      <div class="label-row">⚡ Neural Threshold (Seconds)</div>
+      <input type="number" id="scrollLimit" min="1" value="15">
+      <p class="help-text">Interceptor triggers after this scroll duration.</p>
+    </div>
+
+    <div class="setting-group">
+      <div class="label-row">🔄 Pattern Cooldown (Seconds)</div>
+      <input type="number" id="resetLimit" min="1" value="2">
+      <p class="help-text">Neural reset occurs after this period of inactivity.</p>
+    </div>
+
+    <div class="setting-group">
+      <div class="label-row">🛡️ Firewall Vault</div>
+      <input type="text" id="siteInput" placeholder="Add domain... (e.g. reddit.com)">
+      <div id="siteTags" style="display: flex; flex-wrap: wrap;"></div>
+      <p class="help-text">List of active nodes monitored by Nexus.</p>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="applyAll">
+      <label for="applyAll" style="font-weight: 800; font-size: 11px; color: #94a3b8; letter-spacing: 1px; cursor: pointer;">
+        BROADCAST TO ALL NETWORKS
+      </label>
+    </div>
+
+    <button id="saveBtn" class="save-btn">SYNC TO ENGINE</button>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
